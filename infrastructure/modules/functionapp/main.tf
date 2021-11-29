@@ -7,16 +7,6 @@ data "azurerm_resource_group" "resource_group" {
   name = var.resource_group_name
 }
 
-data "azurerm_key_vault_secret" "cosmos_key" {
-  name         = "cosmos-connectiontionstring"
-  key_vault_id = var.keyvault_resource_id
-}
-
-data "azurerm_key_vault_secret" "cosmos_endpoint" {
-  name         = "cosmos-endpoint"
-  key_vault_id = var.keyvault_resource_id
-}
-
 resource "azurerm_app_service_plan" "app-service-plan" {
   name                         = local.app-service-plan-name
   location                     = data.azurerm_resource_group.resource_group.location
@@ -54,8 +44,8 @@ resource "azurerm_function_app" "function-app" {
 
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY = var.app_insights_key
-    CosmosConnectionString         = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault_secret.cosmos_key.id})"
-    CosmosEndpoint         = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault_secret.cosmos_endpoint.id})"
+    CosmosConnectionString         = "@Microsoft.KeyVault(VaultName=${var.keyvault_name};SecretName=cosmos-connectiontionstring)"
+    CosmosEndpoint                 = "@Microsoft.KeyVault(VaultName=${var.keyvault_name};SecretName=cosmos-endpoint)"
   }
 
   identity {
