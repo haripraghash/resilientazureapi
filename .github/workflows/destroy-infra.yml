@@ -37,7 +37,6 @@ jobs:
       run: terraform validate
 
     - name: Terraform Destroy
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       id: apply
       run: terraform destroy --var-file=dev.tfvars --auto-approve
       continue-on-error: false
