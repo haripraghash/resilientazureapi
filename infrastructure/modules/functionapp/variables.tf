@@ -45,3 +45,13 @@ variable "storage_access_key" {
   type        = string
   description = "Storage primary access key."
 }
+
+variable "app_insights_key" {
+  type        = string
+  description = "App insights key."
+}
+
+variable "keyvault_resource_id" {
+  type        = string
+  description = "KV resource if."
+}
