@@ -1,8 +1,14 @@
 on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'verbose'
   push:
     branches:
     - main
-  #pull_request:
+  pull_request:
  
 jobs:
   terraform:
@@ -13,7 +19,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
     runs-on: ubuntu-latest
-    #environment: production
+    environment: dev
  
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -26,6 +32,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     
+    - uses: hashicorp/setup-terraform@v1.3.2
+      with:
+        terraform_version: "~1.0"
+        terraform_wrapper: false
+    
     - name: Terraform fmt
       id: fmt
       run: terraform fmt -check
@@ -33,15 +44,19 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init
+      run: terraform init -input=false -backend-config='storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME}}' -backend-config='container_name=dev-tfstate' -backend-config='key=dev.tfstate' -backend-config='access_key=${{ secrets.ACCESS_KEY}}'
+      #with:
+        #backend-config: "container_name=dev-tfstate"
+      #' -backend-config="container_name=dev-tfstate" -backend-config="key=dev.tfstate" -backend-config="access_key=${{ secrets.ACCESS_KEY}}"'
 
     - name: Terraform Validate
       id: validate
-      run: terraform validate --var-file=dev.tfvars
+      run: terraform validate
+      #-var-file=dev.tfvars
 
     - name: Terraform Plan
       id: plan
-      run: terraform plan --var-file=dev.tfvars
+      run: terraform plan -no-color -var-file=dev.tfvars
       continue-on-error: false
 
     - uses: actions/github-script@0.9.0
@@ -74,6 +89,7 @@ jobs:
           })
  
     - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       id: apply
       run: terraform apply --var-file=dev.tfvars --auto-approve
       continue-on-error: false
