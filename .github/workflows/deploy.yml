@@ -38,7 +38,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init -backend-config="storage_account_name=test"
+      run: terraform init -input=false -backend-config="storage_account_name=test"
       #with:
         #backend-config: "container_name=dev-tfstate"
       #' -backend-config="container_name=dev-tfstate" -backend-config="key=dev.tfstate" -backend-config="access_key=${{ secrets.ACCESS_KEY}}"'
