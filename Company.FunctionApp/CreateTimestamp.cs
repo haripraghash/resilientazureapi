@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using System.Net;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Company.FunctionApp
-{
+namespace Company.FunctionApp;
+
     public static class CreateTimestamp
     {
         [Function("CreateTimestamp")]
@@ -25,4 +24,3 @@ namespace Company.FunctionApp
             
         }
     }
-}
