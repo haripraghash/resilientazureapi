@@ -104,7 +104,7 @@ jobs:
           })
  
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       id: apply
       run: terraform apply --var-file=dev.tfvars --auto-approve
       continue-on-error: false
