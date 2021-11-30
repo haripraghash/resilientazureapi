@@ -16,7 +16,7 @@ resource "azurerm_app_service_plan" "app-service-plan" {
   zone_redundant               = true
   maximum_elastic_worker_count = 10
   sku {
-    tier     = "Premium"
+    tier     = "ElasticPremium"
     size     = "EP1"
     capacity = 3
   }
@@ -34,7 +34,7 @@ resource "azurerm_function_app" "function-app" {
   https_only                 = true
   site_config {
     app_scale_limit                  = 10
-    linux_fx_version                 = "DOTNET|6.0"
+    linux_fx_version                 = "DOTNET-ISOLATED|6.0"
     elastic_instance_minimum         = 3
     http2_enabled                    = true
     runtime_scale_monitoring_enabled = true

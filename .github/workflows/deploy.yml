@@ -1,18 +1,20 @@
 on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
     inputs:
       logLevel:
         description: 'Log level'     
         required: true
         default: 'verbose'
-  push:
-    branches:
-    - main
-  pull_request:
+  
 
 env:
   AZURE_FUNCTIONAPP_NAME: aa-eun-dev-availableapi-function  # set this to your application's name
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'    # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'Company.FunctionApp'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.100'              # set this to the dotnet version to use
 jobs:
   terraform:
@@ -120,6 +122,10 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
+    - name: 'Restore nuget packages'
+      run: dotnet restore
+      working-directory: ./Company.FunctionApp
+
     - name: 'Resolve Project Dependencies Using Dotnet'
       shell: bash
       run: |
@@ -140,6 +146,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
        dotnet-version: ${{ env.DOTNET_VERSION }}
+    
+    - name: 'Restore nuget packages'
+      run: dotnet restore
+      working-directory: ./Company.FunctionApp
 
     - name: 'Resolve Project Dependencies Using Dotnet'
       shell: bash
@@ -147,7 +157,12 @@ jobs:
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
         popd
-      
+    
+    - name: Upload dotnet dlls
+      uses: actions/upload-artifact@v2
+      with:
+        name: dotnet-results-${{ matrix.dotnet-version }}
+        path: ./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
@@ -158,4 +173,4 @@ jobs:
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        package: './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
