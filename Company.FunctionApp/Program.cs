@@ -15,7 +15,7 @@ public class Program
             var host = new HostBuilder()
                 
                  .ConfigureAppConfiguration(e =>
-                    e.AddJsonFile("local.settings.json", optional: false, reloadOnChange: true).AddEnvironmentVariables().Build())
+                    e.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true).AddEnvironmentVariables().Build())
                 .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
                 .ConfigureServices( s=> s.AddHealthChecks().AddCosmosDb(cosmosConnectionString, $"{Environment.GetEnvironmentVariable("DatabaseName")}"))
                 .ConfigureServices(s => new CosmosClientBuilder(cosmosConnectionString).Build())
