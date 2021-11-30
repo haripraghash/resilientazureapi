@@ -15,100 +15,100 @@ env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.100'              # set this to the dotnet version to use
 jobs:
-  terraform:
-    name: 'Terraform'
-    env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-    runs-on: ubuntu-latest
-    environment: dev
+  # terraform:
+  #   name: 'Terraform'
+  #   env:
+  #     ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+  #     ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+  #   runs-on: ubuntu-latest
+  #   environment: dev
  
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: "./infrastructure"
+  #   # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #       working-directory: "./infrastructure"
  
-    steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v2
+  #   steps:
+  #   # Checkout the repository to the GitHub Actions runner
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
     
-    - uses: hashicorp/setup-terraform@v1.3.2
-      with:
-        terraform_version: "~1.0"
-        terraform_wrapper: false
+  #   - uses: hashicorp/setup-terraform@v1.3.2
+  #     with:
+  #       terraform_version: "~1.0"
+  #       terraform_wrapper: false
     
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: false
+  #   - name: Terraform fmt
+  #     id: fmt
+  #     run: terraform fmt -check
+  #     continue-on-error: false
 
-    - name: Terraform Init
-      id: init
-      run: terraform init -input=false -backend-config='storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME}}' -backend-config='container_name=dev-tfstate' -backend-config='key=dev.tfstate' -backend-config='access_key=${{ secrets.ACCESS_KEY}}'
+  #   - name: Terraform Init
+  #     id: init
+  #     run: terraform init -input=false -backend-config='storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME}}' -backend-config='container_name=dev-tfstate' -backend-config='key=dev.tfstate' -backend-config='access_key=${{ secrets.ACCESS_KEY}}'
 
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate
+  #   - name: Terraform Validate
+  #     id: validate
+  #     run: terraform validate
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.8
-    - name: Test with Checkov
-      id: checkov
-      uses: bridgecrewio/checkov-action@master
-      with:
-        directory: .
-        framework: terraform 
-        quiet: true
-        soft_fail: true
+  #   - name: Set up Python 3.8
+  #     uses: actions/setup-python@v1
+  #     with:
+  #       python-version: 3.8
+  #   - name: Test with Checkov
+  #     id: checkov
+  #     uses: bridgecrewio/checkov-action@master
+  #     with:
+  #       directory: .
+  #       framework: terraform 
+  #       quiet: true
+  #       soft_fail: true
 
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -no-color -var-file=dev.tfvars
-      continue-on-error: false
+  #   - name: Terraform Plan
+  #     id: plan
+  #     run: terraform plan -no-color -var-file=dev.tfvars
+  #     continue-on-error: false
 
-    - uses: actions/github-script@0.9.0
-      if: github.event_name == 'pull_request'
-      env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-          #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+  #   - uses: actions/github-script@0.9.0
+  #     if: github.event_name == 'pull_request'
+  #     env:
+  #       PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+  #     with:
+  #       github-token: ${{ secrets.GITHUB_TOKEN }}
+  #       script: |
+  #         const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+  #         #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+  #         #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
+  #         #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
           
-          <details><summary>Show Plan</summary>
+  #         <details><summary>Show Plan</summary>
           
-          \`\`\`\n
-          ${process.env.PLAN}
-          \`\`\`
+  #         \`\`\`\n
+  #         ${process.env.PLAN}
+  #         \`\`\`
           
-          </details>
+  #         </details>
           
-          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+  #         *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
             
-          github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
-          })
+  #         github.issues.createComment({
+  #           issue_number: context.issue.number,
+  #           owner: context.repo.owner,
+  #           repo: context.repo.repo,
+  #           body: output
+  #         })
  
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      id: apply
-      run: terraform apply --var-file=dev.tfvars --auto-approve
-      continue-on-error: false
+  #   - name: Terraform Apply
+  #     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #     id: apply
+  #     run: terraform apply --var-file=dev.tfvars --auto-approve
+  #     continue-on-error: false
 
   build-and-deploy:
-    needs: terraform
+    #needs: terraform
     runs-on: ubuntu-latest
     environment: dev
     steps:
