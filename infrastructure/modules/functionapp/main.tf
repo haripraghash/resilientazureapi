@@ -49,6 +49,7 @@ resource "azurerm_function_app" "function-app" {
     CollectionName                 = "timestamp-data"
     DatabaseName                   = "timestamps"
     FUNCTIONS_WORKER_RUNTIME       = "dotnet-isolated"
+    WEBSITE_RUN_FROM_PACKAGE       = "1"
   }
 
   identity {
