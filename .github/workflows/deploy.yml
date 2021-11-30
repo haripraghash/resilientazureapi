@@ -107,7 +107,7 @@ jobs:
       run: terraform apply --var-file=dev.tfvars --auto-approve
       continue-on-error: false
 
-  build-and-deploy:
+  build:
     needs: terraform
     runs-on: ubuntu-latest
     environment: dev
@@ -128,7 +128,7 @@ jobs:
         popd
   
   deploy:
-    needs: build-and-deploy
+    needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: dev
