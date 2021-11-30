@@ -40,6 +40,10 @@ resource "azurerm_function_app" "function-app" {
     runtime_scale_monitoring_enabled = true
     use_32_bit_worker_process        = false
     pre_warmed_instance_count        = 1
+
+    cors {
+      allowed_origins = ["*"]
+    }
   }
 
   app_settings = {

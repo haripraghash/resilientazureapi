@@ -40,4 +40,5 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_function_app_identity"></a> [function\_app\_identity](#output\_function\_app\_identity) | n/a |
+| <a name="output_function_app_name"></a> [function\_app\_name](#output\_function\_app\_name) | n/a |
 <!-- END_TF_DOCS -->
