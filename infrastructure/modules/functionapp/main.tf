@@ -16,7 +16,7 @@ resource "azurerm_app_service_plan" "app-service-plan" {
   zone_redundant               = true
   maximum_elastic_worker_count = 10
   sku {
-    tier     = "Premium"
+    tier     = "ElasticPremium"
     size     = "EP1"
     capacity = 3
   }
