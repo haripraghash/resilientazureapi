@@ -60,7 +60,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     name     = "DemoHealthProbeSetting"
     protocol = "Https"
     path     = "/api/Health"
-    interval_in_seconds = 600
+    interval_in_seconds = 250
   }
 
   backend_pool {
