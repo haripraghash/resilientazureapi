@@ -51,7 +51,7 @@ variable "app_insights_key" {
   description = "App insights key."
 }
 
-variable "keyvault_resource_id" {
+variable "keyvault_name" {
   type        = string
-  description = "KV resource if."
+  description = "KV resource name."
 }

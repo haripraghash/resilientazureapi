@@ -34,21 +34,95 @@ resource "azurerm_monitor_diagnostic_setting" "cosmos_diagnostics" {
   log_analytics_workspace_id = var.la_workspace_resource_id
 
   log {
-    category = "PartitionKeyStatistics"
+    category = "CassandraRequests"
     enabled  = false
 
     retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  log {
+    category = "ControlPlaneRequests"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  log {
+    category = "DataPlaneRequests"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  log {
+    category = "GremlinRequests"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  log {
+    category = "MongoRequests"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  log {
+    category = "PartitionKeyRUConsumption"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  log {
+    category = "PartitionKeyStatistics"
+    enabled  = true
+
+    retention_policy {
+      enabled = false
+    }
+  }
+  log {
+    category = "QueryRuntimeStatistics"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  log {
+    category = "TableApiRequests"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
       enabled = false
     }
   }
 
   metric {
-    category = "AllMetrics"
-
+    category = "Requests"
+    enabled  = true
     retention_policy {
-      enabled = false
+      days    = 0
+      enabled = true
     }
   }
+
 }
 
 resource "azurerm_cosmosdb_sql_database" "cosmos_sql_db" {

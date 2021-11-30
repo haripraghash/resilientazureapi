@@ -8,14 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5c89634-30b5-477c-82b1-740272bf62d7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.SimpleHighlyAvailableHttpApi/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Company.FunctionApp/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Company.FunctionApp/Company.FunctionApp.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Company.FunctionApp/CreateTimestamp.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Company.FunctionApp/Program.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Company.FunctionApp/host.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SimpleHighlyAvailableHttpApi.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Company.FunctionApp/CreateTimestampResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SimpleHighlyAvailableHttpApi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SimpleHighlyAvailableHttpApi/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Company.FunctionApp/Company.FunctionApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Company.FunctionApp/Company.FunctionApp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Company.FunctionApp/CreateTimestamp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Company.FunctionApp/CreateTimestamp.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Company.FunctionApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Company.FunctionApp/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +21,31 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="feature/checkov" />
+                    <option name="lastUsedInstant" value="1638213418" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1638213417" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
   </component>
   <component name="ProjectId" id="21V9dvCLODLdOn6idzfb1vlhtZd" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -91,7 +113,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1638015481045</updated>
-      <workItem from="1638015484558" duration="3031000" />
+      <workItem from="1638015484558" duration="4217000" />
+      <workItem from="1638214488388" duration="39000" />
     </task>
     <servers />
   </component>
@@ -99,7 +122,7 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -111,8 +134,28 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Company.FunctionApp/CreateTimestamp.cs</url>
+          <line>22</line>
+          <properties documentPath="$PROJECT_DIR$/Company.FunctionApp/CreateTimestamp.cs" initialLine="22" containingFunctionPresentation="method 'Run'">
+            <startOffsets>
+              <option value="1183" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1242" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

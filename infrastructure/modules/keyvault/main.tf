@@ -24,10 +24,6 @@ resource "azurerm_key_vault_access_policy" "default_policy" {
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azurerm_client_config.current.object_id
 
-  lifecycle {
-    create_before_destroy = true
-  }
-
   key_permissions         = var.kv-key-permissions-full
   secret_permissions      = var.kv-secret-permissions-full
   certificate_permissions = var.kv-certificate-permissions-full

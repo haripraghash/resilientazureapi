@@ -9,7 +9,11 @@ on:
     branches:
     - main
   pull_request:
- 
+
+env:
+  AZURE_FUNCTIONAPP_NAME: aa-eun-dev-availableapi-function  # set this to your application's name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'    # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '6.0.100'              # set this to the dotnet version to use
 jobs:
   terraform:
     name: 'Terraform'
@@ -45,9 +49,6 @@ jobs:
     - name: Terraform Init
       id: init
       run: terraform init -input=false -backend-config='storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME}}' -backend-config='container_name=dev-tfstate' -backend-config='key=dev.tfstate' -backend-config='access_key=${{ secrets.ACCESS_KEY}}'
-      #with:
-        #backend-config: "container_name=dev-tfstate"
-      #' -backend-config="container_name=dev-tfstate" -backend-config="key=dev.tfstate" -backend-config="access_key=${{ secrets.ACCESS_KEY}}"'
 
     - name: Terraform Validate
       id: validate
@@ -105,3 +106,36 @@ jobs:
       id: apply
       run: terraform apply --var-file=dev.tfvars --auto-approve
       continue-on-error: false
+
+  build-and-deploy:
+    needs: terraform
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@main
+
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: 'Resolve Project Dependencies Using Dotnet'
+      shell: bash
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        dotnet build --configuration Release --output ./output
+        popd
+        
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }}
+
+    - name: 'Run Azure Functions Action'
+      uses: Azure/functions-action@v1
+      id: fa
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
