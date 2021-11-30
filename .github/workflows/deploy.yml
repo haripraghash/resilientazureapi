@@ -104,7 +104,7 @@ jobs:
           })
  
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'workflow_dispatch'
       id: apply
       run: terraform apply --var-file=dev.tfvars --auto-approve
       continue-on-error: false
@@ -135,7 +135,7 @@ jobs:
   
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: (github.ref == 'refs/heads/main' && github.event_name == 'push')  || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment: dev
     steps:

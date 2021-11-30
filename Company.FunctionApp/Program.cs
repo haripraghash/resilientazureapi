@@ -18,7 +18,7 @@ public class Program
                     e.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true).AddEnvironmentVariables().Build())
                 .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
                 .ConfigureServices( s=> s.AddHealthChecks().AddCosmosDb(cosmosConnectionString, $"{Environment.GetEnvironmentVariable("DatabaseName")}"))
-                .ConfigureServices(s => new CosmosClientBuilder(cosmosConnectionString).Build())
+                .ConfigureServices(s => new CosmosClientBuilder(cosmosConnectionString).WithSerializerOptions(new Microsoft.Azure.Cosmos.CosmosSerializationOptions() { PropertyNamingPolicy = Microsoft.Azure.Cosmos.CosmosPropertyNamingPolicy.CamelCase}) .Build())
                 .ConfigureOpenApi()
                 .Build();
          
