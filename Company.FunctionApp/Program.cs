@@ -13,12 +13,16 @@ public class Program
         {
             var cosmosConnectionString = $"AccountEndPoint={Environment.GetEnvironmentVariable("CosmosEndpoint")};AccountKey={Environment.GetEnvironmentVariable("CosmosConnectionString")};";
             var host = new HostBuilder()
-                
+
                  .ConfigureAppConfiguration(e =>
                     e.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true).AddEnvironmentVariables().Build())
                 .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
-                .ConfigureServices( s=> s.AddHealthChecks().AddCosmosDb(cosmosConnectionString, $"{Environment.GetEnvironmentVariable("DatabaseName")}"))
-                .ConfigureServices(s => new CosmosClientBuilder(cosmosConnectionString).WithSerializerOptions(new Microsoft.Azure.Cosmos.CosmosSerializationOptions() { PropertyNamingPolicy = Microsoft.Azure.Cosmos.CosmosPropertyNamingPolicy.CamelCase}) .Build())
+                .ConfigureServices(s =>
+               {
+               s.AddHealthChecks().AddCosmosDb(cosmosConnectionString, $"{Environment.GetEnvironmentVariable("DatabaseName")}");
+               s.AddSingleton(sp =>  new CosmosClientBuilder(cosmosConnectionString).WithSerializerOptions(
+                    new Microsoft.Azure.Cosmos.CosmosSerializationOptions() { PropertyNamingPolicy = Microsoft.Azure.Cosmos.CosmosPropertyNamingPolicy.CamelCase }).Build());
+                })
                 .ConfigureOpenApi()
                 .Build();
          

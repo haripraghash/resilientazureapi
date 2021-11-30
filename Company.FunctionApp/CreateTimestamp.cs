@@ -1,7 +1,9 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Company.FunctionApp;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -36,6 +38,7 @@ public class CreateTimestamp
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("CreateTimestamp");
+
         var container = this.cosmosClient.GetContainer(this.configuration["DatabaseName"], this.configuration["CollectionName"]);
         TimestampModel model = new TimestampModel()
         {
