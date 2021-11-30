@@ -46,8 +46,8 @@ resource "azurerm_function_app" "function-app" {
     APPINSIGHTS_INSTRUMENTATIONKEY = var.app_insights_key
     CosmosConnectionString         = "@Microsoft.KeyVault(VaultName=${var.keyvault_name};SecretName=cosmos-connectiontionstring)"
     CosmosEndpoint                 = "@Microsoft.KeyVault(VaultName=${var.keyvault_name};SecretName=cosmos-endpoint)"
-    CollectionName = "timestamp-data"
-    DatabaseName = "timestamps"
+    CollectionName                 = "timestamp-data"
+    DatabaseName                   = "timestamps"
   }
 
   identity {

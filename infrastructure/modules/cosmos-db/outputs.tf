@@ -6,6 +6,3 @@ output "cosmos_account_endpoint" {
   value = azurerm_cosmosdb_account.cosmos_account.endpoint
 }
 
-output "cosmos_account_endpoint" {
-  value = azurerm_cosmosdb_account.cosmos_account.
-}
