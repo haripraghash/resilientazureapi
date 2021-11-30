@@ -122,6 +122,10 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
+    - name: 'Restore nuget packages'
+      run: dotnet restore
+      working-directory: ./Company.FunctionApp
+
     - name: 'Resolve Project Dependencies Using Dotnet'
       shell: bash
       run: |
