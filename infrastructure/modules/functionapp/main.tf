@@ -48,7 +48,7 @@ resource "azurerm_function_app" "function-app" {
     CosmosEndpoint                 = "@Microsoft.KeyVault(VaultName=${var.keyvault_name};SecretName=cosmos-endpoint)"
     CollectionName                 = "timestamp-data"
     DatabaseName                   = "timestamps"
-    FUNCTIONS_WORKER_RUNTIME       = "dotnet"
+    FUNCTIONS_WORKER_RUNTIME       = "dotnet-isolated"
   }
 
   identity {
