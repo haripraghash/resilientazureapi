@@ -43,7 +43,6 @@ module "cosmos_account" {
   project_name             = var.project_name
   env                      = var.env
   autoscale_max_throughput = var.autoscale_max_throughput
-  la_workspace_resource_id = data.azurerm_log_analytics_workspace.la_workspace.id
 
 }
 

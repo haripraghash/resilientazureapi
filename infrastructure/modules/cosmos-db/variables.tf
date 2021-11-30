@@ -36,11 +36,6 @@ variable "resource_group_name" {
   description = "The name of the resource group the resource will be part of."
 }
 
-variable "la_workspace_resource_id" {
-  type        = string
-  description = "Resource id of the LA workspace"
-}
-
 variable "autoscale_max_throughput" {
   type        = number
   description = "Max throughput for auto scale of cosmos db."

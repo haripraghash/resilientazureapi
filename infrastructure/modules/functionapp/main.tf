@@ -34,7 +34,7 @@ resource "azurerm_function_app" "function-app" {
   https_only                 = true
   site_config {
     app_scale_limit                  = 10
-    dotnet_framework_version         = "v6.0"
+    linux_fx_version                 = "DOTNET|6.0"
     elastic_instance_minimum         = 3
     http2_enabled                    = true
     runtime_scale_monitoring_enabled = true
