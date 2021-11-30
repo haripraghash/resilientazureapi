@@ -1,6 +1,9 @@
+using System;
 using System.Net;
+using System.Threading.Tasks;
 using Company.FunctionApp;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -12,37 +15,43 @@ using Microsoft.OpenApi.Models;
 
 namespace Company.FunctionApp;
 
-    public class CreateTimestamp
-    {
-        private CosmosClient cosmosClient;
-        private ILogger<CreateTimestamp> logger;
-        private IConfiguration configuration;
+public class CreateTimestamp
+{
+    private CosmosClient cosmosClient;
+    private ILogger<CreateTimestamp> logger;
+    private IConfiguration configuration;
 
     public CreateTimestamp(CosmosClient cosmosClient, IConfiguration configuration, ILogger<CreateTimestamp> logger)
     {
         this.logger = logger;
-        this.cosmosClient = cosmosClient;   
+        this.cosmosClient = cosmosClient;
         this.configuration = configuration;
 
     }
-        [OpenApiOperation(operationId: "createtimestamp", tags: new[] { "timestamp" }, Summary = "Timestamps", Description = "This created a timestamp entry.", Visibility = OpenApiVisibilityType.Important)]
-        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(CreateTimestampResponse), Summary = "The response", Description = "This returns the response")]
+    [OpenApiOperation(operationId: "createtimestamp", tags: new[] { "timestamp" }, Summary = "Timestamps", Description = "This created a timestamp entry.", Visibility = OpenApiVisibilityType.Important)]
+    [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(CreateTimestampResponse), Summary = "The response", Description = "This returns the response")]
 
-        [Function("CreateTimestamp")]
-        public HttpResponseData Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post")]HttpRequestData request,
-            FunctionContext executionContext)
+    [Function("CreateTimestamp")]
+    public async Task<HttpResponseData> Run(
+        [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData request,
+        FunctionContext executionContext)
+    {
+        var logger = executionContext.GetLogger("CreateTimestamp");
+
+        var container = this.cosmosClient.GetContainer(this.configuration["DatabaseName"], this.configuration["CollectionName"]);
+        TimestampModel model = new TimestampModel()
         {
-            var logger = executionContext.GetLogger("CreateTimestamp");
-            logger.LogInformation("C# HTTP trigger function processed a request.");
+            Timestamp = System.DateTime.UtcNow
+        };
 
-            var response = request.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+        var result = await container.CreateItemAsync<TimestampModel>(model, new PartitionKey(model.Name));
+        
+        var response = request.CreateResponse(HttpStatusCode.OK);
 
-            response.WriteString("Welcome to Azure Functions!");
+        await response.WriteAsJsonAsync<CreateTimestampResponse>(new CreateTimestampResponse() { Id = result.Resource.Id, InsertedTimestamp = result.Resource.Timestamp });
 
-            return response;
-            
-        }
+        return response;
+
     }
+}

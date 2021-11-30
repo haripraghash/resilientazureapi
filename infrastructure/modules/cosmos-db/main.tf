@@ -43,7 +43,7 @@ resource "azurerm_cosmosdb_sql_container" "cosmos_sql_container" {
   resource_group_name   = azurerm_cosmosdb_account.cosmos_account.resource_group_name
   account_name          = azurerm_cosmosdb_account.cosmos_account.name
   database_name         = azurerm_cosmosdb_sql_database.cosmos_sql_db.name
-  partition_key_path    = "/id"
+  partition_key_path    = "/name"
   partition_key_version = 1
 
   indexing_policy {
