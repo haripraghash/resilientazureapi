@@ -78,3 +78,13 @@ module "storage-account" {
   project_name        = var.project_name
   env                 = var.env
 }
+
+module "front-door" {
+  source              = "./modules/front-door"
+  short_region        = var.short_region
+  resource_group_name = var.resource_group_name
+  company_name        = var.company_name
+  project_name        = var.project_name
+  env                 = var.env
+  function_app_name   = module.function-app.function_app_name
+}

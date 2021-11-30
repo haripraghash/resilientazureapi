@@ -29,12 +29,11 @@ public class CreateTimestamp
 
     }
     [OpenApiOperation(operationId: "createtimestamp", tags: new[] { "timestamp" }, Summary = "Timestamps", Description = "This created a timestamp entry.", Visibility = OpenApiVisibilityType.Important)]
-    [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(CreateTimestampResponse), Summary = "The response", Description = "This returns the response")]
 
     [Function("CreateTimestamp")]
     public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData request,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("CreateTimestamp");

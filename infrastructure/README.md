@@ -18,6 +18,7 @@
 |------|--------|---------|
 | <a name="module_app_insights"></a> [app\_insights](#module\_app\_insights) | ./modules/app-insights | n/a |
 | <a name="module_cosmos_account"></a> [cosmos\_account](#module\_cosmos\_account) | ./modules/cosmos-db | n/a |
+| <a name="module_front-door"></a> [front-door](#module\_front-door) | ./modules/front-door | n/a |
 | <a name="module_function-app"></a> [function-app](#module\_function-app) | ./modules/functionapp | n/a |
 | <a name="module_key-vault"></a> [key-vault](#module\_key-vault) | ./modules/keyvault | n/a |
 | <a name="module_storage-account"></a> [storage-account](#module\_storage-account) | ./modules/storage | n/a |
