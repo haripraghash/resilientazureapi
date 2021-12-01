@@ -2,7 +2,7 @@
 # resilientazureapi
 A sample repo demonstrating a http api deployment on azure over multi-az
 
-![Deployment view](https://github.com/haripraghash/resilientapi/blob/main/Deploymentview.png?raw=true)
+![Deployment view](https://github.com/haripraghash/resilientazureapi/blob/main/Deploymentview.png?raw=true)
 
 ## Getting Started
 
